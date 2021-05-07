@@ -7,7 +7,6 @@ from market.models import Item
 def home_page():
     return render_template('home.html')
 
-
 @app.route('/market')
 def market_page():
     items = Item.query.all()
