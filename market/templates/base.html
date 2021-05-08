@@ -65,8 +65,20 @@
         </div>
       </div>
     </nav>
-    {% block content %}
-    {% endblock %}
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show">
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <span aria-hidden="true">&times;</span>
+              </button>
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% block content %}
+      {% endblock %}
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script
