@@ -59,7 +59,7 @@
               <a class="nav-link">Welcome, {{ current_user.username }}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Logout</a>
+              <a class="nav-link" href="{{ url_for('logout_page') }} ">Logout</a>
             </li>
             {% else %}
             <li class="nav-item">
@@ -89,7 +89,6 @@
           {% for category, message in messages %}
             <div class="alert alert-{{ category }} alert-dismissible fade show">
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                <span aria-hidden="true">&times;</span>
               </button>
               {{ message }}
             </div>
