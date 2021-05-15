@@ -10,15 +10,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">{{ owned_item.name }}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color:white"></button>
       </div>
       <div class="modal-body">
         <form method="POST">
         {{ selling_form.hidden_tag() }}
-        <h4 class="text-center">Are you sure you want to sell {{ owned_item.name }} for {{ owned_item.price }}$ ?</h4>
+        <h5 class="text-center">Are you sure you want to sell <br> {{ owned_item.name }} for {{ owned_item.price }}$ ?</h5>
         <br>
-        <h6 class="text-center">By clicking sell, you will put this item back on market</h6>
-        <br>
+        <p class="text-center">By clicking sell, you will put this item back on market</p>
         <div class="d-grid gap-2">
           <input id="sold_item" name="sold_item" type="hidden" value="{{ owned_item.name }}">
           {{ selling_form.submit(class="btn btn-danger") }}
@@ -27,7 +26,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

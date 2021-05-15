@@ -17,7 +17,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
@@ -34,10 +33,9 @@
       <div class="modal-body">
         <form method="POST">
         {{ purchase_form.hidden_tag() }}
-        <h4 class="text-center">Are you sure you want to buy {{ item.name }} for {{ item.price }}$ ?</h4>
+        <h5 class="text-center">Are you sure you want to buy <br> {{ item.name }} for {{ item.price }}$ ?</h5>
         <br>
-        <h6 class="text-center">By clicking purchase, you purchase this item.</h6>
-        <br>
+        <p class="text-center">By clicking purchase, you purchase this item.</p>
         <div class="d-grid gap-2">
           <input id="purchased_item" name="purchased_item" type="hidden" value="{{ item.name }}">
           {{ purchase_form.submit(class="btn btn-success") }}
@@ -46,7 +44,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
