@@ -16,7 +16,7 @@ def home_page():
 @login_required
 def market_page():
     purchase_form = PurchaseItemForm()
-    selling_form =SellItemForm()
+    selling_form = SellItemForm()
     if request.method == 'POST':
         # Purchase Item Logic
         purchased_item = request.form.get('purchased_item')
@@ -81,3 +81,9 @@ def logout_page():
     logout_user()
     flash('You have been logged out', category='info')
     return redirect(url_for('home_page'))
+
+@app.route('/account')
+def account_page():
+    image_file = url_for('static', filename=f'profile_pics/{current_user.image_file}')
+    print(image_file)
+    return render_template('account.html', image_file=image_file)
