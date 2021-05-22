@@ -3,7 +3,7 @@ from sqlalchemy.orm.query import Query
 from market import app
 from flask import render_template, redirect, url_for, flash, request
 from market.models import Item, User
-from market.forms import LoginForm, RegisterForm, PurchaseItemForm, SellItemForm
+from market.forms import LoginForm, RegisterForm, PurchaseItemForm, SellItemForm, UpdateAccountForm
 from market import db
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -53,7 +53,7 @@ def register_page():
         db.session.add(user_to_create)
         db.session.commit()
         login_user(user_to_create)
-        flash(f'Account created successfully! You are now logged in as {user_to_create.username}', category='success')
+        flash(f'Account has been created successfully! You are now logged in as {user_to_create.username}', category='success')
         return redirect(url_for('market_page'))
     # If there are no errors from validations
     if form.errors != {}:
@@ -82,8 +82,21 @@ def logout_page():
     flash('You have been logged out', category='info')
     return redirect(url_for('home_page'))
 
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account_page():
+    form = UpdateAccountForm()
     image_file = url_for('static', filename=f'profile_pics/{current_user.image_file}')
-    return render_template('account.html', image_file=image_file)
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email_address = form.email_address.data
+        db.session.commit()
+        flash(f'Your account has been updated!', category='success')
+        return redirect(url_for('account_page'))
+    if form.errors != {}:
+        for err_msg in form.errors.values():
+            flash(err_msg, category='danger')
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email_address.data = current_user.email_address
+    return render_template('account.html', image_file=image_file, form=form)
