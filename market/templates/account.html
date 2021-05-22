@@ -4,14 +4,14 @@
 {% endblock %} 
 {% block content %}
 <br>
-<div class="media m-5 text-center">
+<div class="media m-3 text-center">
     <img src="{{ image_file }}" alt="Profile Picture" class="img-thumbnail mr-3" style="width:200px;height:200px">
     <div class="media-body">
       <h5 class="mt-3">{{ current_user.username}}</h5>
       <p>{{ current_user.email_address }}</p>
     </div>
 </div>
-<form method="POST" class="form-register m-5 text" style="color:white">
+<form method="POST" class="form-register m-5 text" style="color:white" enctype="multipart/form-data">
   {{ form.hidden_tag() }}
   <br>
   <h1 class="h3 mb-3 font-weight-normal">
@@ -23,6 +23,10 @@
   {{ form.email_address.label() }}
   {{ form.email_address(class="form-control", placeholder="Email Address") }}
   <br>
+  {{ form.picture.label() }}
+  {{ form.picture(class="form-control", type="file") }}
+  <br>
+
   <div class="d-grid gap-2">
     {{ form.submit(class="btn btn-lg btn-primary") }}
   </div>

@@ -1,3 +1,5 @@
+import secrets
+import os
 from flask_login.utils import logout_user
 from sqlalchemy.orm.query import Query
 from market import app
@@ -61,6 +63,7 @@ def register_page():
             flash(f'There was an error with creating a user: {err_msg}', category='danger')
     return render_template('register.html', form=form)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login_page():
     form = LoginForm()
@@ -82,21 +85,33 @@ def logout_page():
     flash('You have been logged out', category='info')
     return redirect(url_for('home_page'))
 
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_file_name = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_file_name)
+    form_picture.save(picture_path)
+    return picture_file_name
+
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account_page():
     form = UpdateAccountForm()
-    image_file = url_for('static', filename=f'profile_pics/{current_user.image_file}')
     if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file = picture_file
         current_user.username = form.username.data
         current_user.email_address = form.email_address.data
         db.session.commit()
         flash(f'Your account has been updated!', category='success')
         return redirect(url_for('account_page'))
-    if form.errors != {}:
-        for err_msg in form.errors.values():
+    if form.picture.errors:
+        for err_msg in form.picture.errors:
             flash(err_msg, category='danger')
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email_address.data = current_user.email_address
+    print(current_user.image_file)
+    image_file = url_for('static', filename=f'profile_pics/{current_user.image_file}')
     return render_template('account.html', image_file=image_file, form=form)
