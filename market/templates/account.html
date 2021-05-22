@@ -1,13 +1,13 @@
 {% extends 'base.html' %} 
 {% block title %}
-  Account Page
+  Your Profile
 {% endblock %} 
 {% block content %}
 <br>
-<div class="media m-5">
-    <img src="{{ image_file }}" alt="Profile Picture" class="img-thumbnail mr-3" style="width:100px;height:100px">
+<div class="media m-5 text-center">
+    <img src="{{ image_file }}" alt="Profile Picture" class="img-thumbnail mr-3" style="width:200px;height:200px">
     <div class="media-body">
-      <h5 class="mt-0">{{ current_user.username}}</h5>
+      <h5 class="mt-3">{{ current_user.username}}</h5>
       <p>{{ current_user.email_address }}</p>
     </div>
   </div>
