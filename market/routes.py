@@ -1,5 +1,6 @@
 import secrets
 import os
+from PIL import Image
 from flask_login.utils import logout_user
 from sqlalchemy.orm.query import Query
 from market import app
@@ -85,12 +86,17 @@ def logout_page():
     flash('You have been logged out', category='info')
     return redirect(url_for('home_page'))
 
-def save_picture(form_picture):
+def save_picture(form_picture) -> str:
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_file_name = random_hex + f_ext
     picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_file_name)
-    form_picture.save(picture_path)
+
+    output_size = (125, 125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
     return picture_file_name
 
 @app.route('/account', methods=['GET', 'POST'])
