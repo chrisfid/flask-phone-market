@@ -4,11 +4,9 @@
 {% endblock %}
 
 {% block content %}
-<body class="text-center">
-  <div class="container">
-    <br>
-    <br>
-    <form method="POST" class="form-signin" style="color:white">
+<body>
+  <div class="container text-center w-25">
+    <form method="POST" class="form-signin">
       {{ form.hidden_tag() }}
       <h1 class="h3 mb-3 font-weight-normal">
         New Post
@@ -19,9 +17,8 @@
       </div>
       <div class="mb-3">
         {{ form.content.label() }}
-        {{ form.content(class="form-control", rows="4") }}
+        {{ form.content(class="form-control") }}
       </div>
-      <br>
       <div class="d-grid gap-2">
         {{ form.submit(class="btn btn-lg btn-primary") }}
       </div>

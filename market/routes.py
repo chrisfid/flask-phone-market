@@ -119,7 +119,6 @@ def account_page():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email_address.data = current_user.email_address
-    print(current_user.image_file)
     image_file = url_for('static', filename=f'profile_pics/{current_user.image_file}')
     return render_template('account.html', image_file=image_file, form=form)
 

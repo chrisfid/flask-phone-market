@@ -4,27 +4,27 @@ Register Page
 {% endblock %}
 
 {% block content %}
-<body class="text-center">
-  <div class="container">
-    <br>
-    <form method="POST" class="form-register" style="color:white">
+<body>
+  <div class="container text-center w-25">
+    <form method="POST" class="form-register">
       {{ form.hidden_tag() }}
       <br>
       <h1 class="h3 mb-3 font-weight-normal">
         Please Create your Account
       </h1>
+      
       {{ form.username.label() }}
-      {{ form.username(class="form-control", placeholder="Username") }}
-
+      {{ form.username(class="form-control mb-3", placeholder="Username") }}
+      
       {{ form.email_address.label() }}
-      {{ form.email_address(class="form-control", placeholder="Email Address") }}
-
+      {{ form.email_address(class="form-control mb-3", placeholder="Email Address") }}
+      
       {{ form.password1.label() }}
-      {{ form.password1(class="form-control", placeholder="Password") }}
-
+      {{ form.password1(class="form-control mb-3", placeholder="Password") }}
+      
       {{ form.password2.label() }}
-      {{ form.password2(class="form-control", placeholder="Confirm Password") }}
-      <br>
+      {{ form.password2(class="form-control mb-3", placeholder="Confirm Password") }}
+
       <div class="checkbox mb-3">
         <h6>Already have an account?</h6>
         <a href="{{ url_for('login_page') }}" class="btn btn-sm btn-secondary">Login</a>
