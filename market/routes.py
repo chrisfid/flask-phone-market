@@ -1,3 +1,4 @@
+from operator import pos
 import secrets
 import os
 from PIL import Image
@@ -5,7 +6,7 @@ from flask_login.utils import logout_user
 from sqlalchemy.orm.query import Query
 from wtforms import validators
 from market import app
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, abort
 from market.models import Item, User, Post
 from market.forms import LoginForm, RegisterForm, PurchaseItemForm, SellItemForm, UpdateAccountForm, PostForm
 from market import db
@@ -122,6 +123,18 @@ def account_page():
     image_file = url_for('static', filename=f'profile_pics/{current_user.image_file}')
     return render_template('account.html', image_file=image_file, form=form)
 
+@app.route('/forum')
+@login_required
+def forum_page():
+    posts = Post.query.all()
+    return render_template('forum.html', posts=posts)
+ 
+@app.route('/post/<int:post_id>')
+@login_required
+def post_page(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title=post.title, post=post)
+
 @app.route('/post/new', methods=['GET', 'POST'])
 @login_required
 def new_post():
@@ -132,10 +145,36 @@ def new_post():
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('forum_page'))
-    return render_template('create_post.html', form=form)
+    return render_template('create_post.html', form=form, legend='New Post')
 
-@app.route('/forum')
-def forum_page():
-    posts = Post.query.all()
-    return render_template('forum.html', posts=posts)
- 
+@app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
+@login_required
+def update_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        # Forbidden route
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('You post has been updated!', category='success')
+        return redirect(url_for('post_page', post_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('create_post.html', title='Update Post', form=form, 
+                            legend='Update Post')
+
+@app.route('/post/<int:post_id>/delete', methods=['GET', 'POST'])
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        # Forbidden route
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash(f'Your post has been deleted!', category='success')
+    return redirect(url_for('forum_page'))

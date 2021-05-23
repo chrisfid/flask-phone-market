@@ -62,16 +62,18 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link">Welcome, {{ current_user.username }}</a>
+              <a class="nav-link" href="{{ url_for('account_page') }}">
+                Logged as <strong>{{ current_user.username }}</strong>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('new_post') }} ">New Post</a>
+              <a class="nav-link" href="{{ url_for('new_post') }}">New Post</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('account_page') }} ">Profile</a>
+              <a class="nav-link" href="{{ url_for('account_page') }}">Profile</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('logout_page') }} ">Logout</a>
+              <a class="nav-link" href="{{ url_for('logout_page') }}">Logout</a>
             </li>
             {% else %}
             <li class="nav-item">

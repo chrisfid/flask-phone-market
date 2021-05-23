@@ -4,10 +4,10 @@
 {% endblock %} 
 
 {% block content %}
-<div class="container">
+<div class="container w-50">
   <div class="jumbotron text-center">
-    <h1 class="display-4">Welcome!</h1>
-    <p class="lead">to our forum</p>
+    <h1 class="display-4">Forum</h1>
+    <p class="lead">let's talk about products</p>
     <hr class="my-4">
     <!-- <p>Sign up to get 1000$ for <strong>FREE</strong>.</p> -->
     <p class="lead">
@@ -16,13 +16,20 @@
     <!-- <img src="{{ url_for('static', filename='marketplace.jpg') }}
     " class="img-thumbnail m-3" alt="Marketplace" width="350px"> -->
   </div>
-  {% for post in posts %}
-  <div class="media w-50" >
-    <img class="mr-3 rounded-circle" src="..." alt="Generic placeholder image">
-    <div class="media-body">
-      <h5 class="mt-0">lala</h5>
+  {% for post in posts|reverse %}
+  <div class="media m-4 p-3 border rounded">
+    <img class="mx-4 rounded-circle float-start",
+     src="{{ url_for('static', filename='/profile_pics/' + post.author.image_file) }}",
+     alt="Generic placeholder image",
+     style="width:64px;height:64px">
+     
+     <div class="media-body m-2">
+       <b>{{ post.author.username }}</b>
+       <br>
+       <small>{{ post.time_created.strftime("%Y-%m-%d %H:%M") }}</small>
+       <hr class="mt-4">
+      <h3 class="mt-0"><a class="text-light text-decoration-none" href="{{ url_for('post_page', post_id=post.id) }}">{{ post.title }} </a></h3>
       {{ post.content }}
-      Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
     </div>
   </div>
   {% endfor %}

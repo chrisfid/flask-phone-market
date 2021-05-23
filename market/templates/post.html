@@ -1,0 +1,31 @@
+{% extends 'base.html' %} 
+{% block title %}
+  {{ title }}
+{% endblock %} 
+
+{% block content %}
+<div class="container w-50">
+  <div class="media m-4 p-3 border rounded">
+    <img class="mx-4 rounded-circle float-start",
+    src="{{ url_for('static', filename='/profile_pics/' + post.author.image_file) }}",
+    alt="Generic placeholder image",
+    style="width:64px;height:64px">
+    
+    <div class="media-body m-2">
+      <b>{{ post.author.username }}</b>
+      <br>
+      <small>{{ post.time_created.strftime("%Y-%m-%d %H:%M") }}</small>
+      {% if current_user == post.author %}
+        {% include 'includes/post_modals.html' %}
+        <button type="button" class="btn btn-danger float-end mx-1" data-bs-toggle="modal" data-bs-target="#Modal-DeletePost">
+          Delete
+        </button>
+        <a type="button" href="{{ url_for('update_post', post_id=post.id) }}" class="btn btn-primary float-end">Update</a>
+      {% endif %}
+      <hr class="mt-4">
+      <h4 class="mt-0">{{ post.title }}</></h4>
+      {{ post.content }}
+    </div>
+  </div>
+</div>
+{% endblock %}
