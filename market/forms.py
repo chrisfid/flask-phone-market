@@ -1,3 +1,4 @@
+from flask.app import Flask
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
@@ -50,3 +51,8 @@ class UpdateAccountForm(FlaskForm):
       email_address = User.query.filter_by(email_address=email_address_to_check.data).first()
       if email_address:
         raise ValidationError('That email address already exists. Please choose a different one')
+
+class PostForm(FlaskForm):
+  title = StringField('Title', validators=[DataRequired()])
+  content = StringField('Content', validators=[DataRequired()])
+  submit = SubmitField('Post')

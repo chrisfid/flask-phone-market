@@ -3,10 +3,11 @@ import os
 from PIL import Image
 from flask_login.utils import logout_user
 from sqlalchemy.orm.query import Query
+from wtforms import validators
 from market import app
 from flask import render_template, redirect, url_for, flash, request
-from market.models import Item, User
-from market.forms import LoginForm, RegisterForm, PurchaseItemForm, SellItemForm, UpdateAccountForm
+from market.models import Item, User, Post
+from market.forms import LoginForm, RegisterForm, PurchaseItemForm, SellItemForm, UpdateAccountForm, PostForm
 from market import db
 from flask_login import login_user, logout_user, login_required, current_user
 
@@ -121,3 +122,21 @@ def account_page():
     print(current_user.image_file)
     image_file = url_for('static', filename=f'profile_pics/{current_user.image_file}')
     return render_template('account.html', image_file=image_file, form=form)
+
+@app.route('/post/new', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data,  content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('forum_page'))
+    return render_template('create_post.html', form=form)
+
+@app.route('/forum')
+def forum_page():
+    posts = Post.query.all()
+    return render_template('forum.html', posts=posts)
+ 

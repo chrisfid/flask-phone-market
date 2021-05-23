@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}
+  New Post
+{% endblock %}
+
+{% block content %}
+<body class="text-center">
+  <div class="container">
+    <br>
+    <br>
+    <form method="POST" class="form-signin" style="color:white">
+      {{ form.hidden_tag() }}
+      <h1 class="h3 mb-3 font-weight-normal">
+        New Post
+      </h1>
+      <div class="mb-3">
+        {{ form.title.label() }}
+        {{ form.title(class="form-control") }}
+      </div>
+      <div class="mb-3">
+        {{ form.content.label() }}
+        {{ form.content(class="form-control", rows="4") }}
+      </div>
+      <br>
+      <div class="d-grid gap-2">
+        {{ form.submit(class="btn btn-lg btn-primary") }}
+      </div>
+    </form>
+  </div>
+</body>
+{% endblock %}

@@ -1,3 +1,6 @@
+from datetime import datetime
+from sqlalchemy.sql.schema import PrimaryKeyConstraint
+from sqlalchemy.sql import func
 from market import db, login_manager
 from market import bcrypt
 from flask_login import UserMixin
@@ -15,6 +18,10 @@ class User(db.Model, UserMixin):
     # Must be default -> server_default so that you can add a col to an existing db
     image_file = db.Column(db.Integer(), nullable=False, server_default='default-profile-pic.jpg')
     items = db.relationship('Item', backref='owned_user', lazy=True)
+    posts = db.relationship('Post', backref='author', lazy=True)
+
+    def __repr__(self):
+        return f'User: {self.username}'
 
     @property
     def prettier_budget(self):
@@ -59,3 +66,13 @@ class Item(db.Model):
         self.owner = None
         user.budget += self.price
         db.session.commit()
+
+class Post(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    time_created = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f'Post({self.title}, {self.date_posted})'
