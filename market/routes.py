@@ -126,7 +126,8 @@ def account_page():
 @app.route('/forum')
 @login_required
 def forum_page():
-    posts = Post.query.all()
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.time_created.desc()).paginate(page=page, per_page=4)
     return render_template('forum.html', posts=posts)
  
 @app.route('/post/<int:post_id>')
@@ -145,7 +146,7 @@ def new_post():
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('forum_page'))
-    return render_template('create_post.html', form=form, legend='New Post')
+    return render_template('create_update_post.html', form=form, legend='New Post')
 
 @app.route('/post/<int:post_id>/update', methods=['GET', 'POST'])
 @login_required
@@ -164,7 +165,7 @@ def update_post(post_id):
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
-    return render_template('create_post.html', title='Update Post', form=form, 
+    return render_template('create_update_post.html', title='Update Post', form=form, 
                             legend='Update Post')
 
 @app.route('/post/<int:post_id>/delete', methods=['GET', 'POST'])

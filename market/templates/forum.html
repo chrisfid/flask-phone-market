@@ -7,7 +7,7 @@
 <div class="container w-50">
   <div class="jumbotron text-center">
     <h1 class="display-4">Forum</h1>
-    <p class="lead">let's talk about products</p>
+    <p class="lead">Let's talk about technology!</p>
     <hr class="my-4">
     <!-- <p>Sign up to get 1000$ for <strong>FREE</strong>.</p> -->
     <p class="lead">
@@ -16,7 +16,7 @@
     <!-- <img src="{{ url_for('static', filename='marketplace.jpg') }}
     " class="img-thumbnail m-3" alt="Marketplace" width="350px"> -->
   </div>
-  {% for post in posts|reverse %}
+  {% for post in posts.items %}
   <div class="media m-4 p-3 border rounded">
     <img class="mx-4 rounded-circle float-start",
      src="{{ url_for('static', filename='/profile_pics/' + post.author.image_file) }}",
@@ -31,7 +31,20 @@
       <h3 class="mt-0"><a class="text-light text-decoration-none" href="{{ url_for('post_page', post_id=post.id) }}">{{ post.title }} </a></h3>
       {{ post.content }}
     </div>
-  </div>
+   </div>
+   {% endfor %}
+   <div class="text-center">
+  {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+  {% if page_num %}
+    {% if posts.page == page_num %}
+      <a href="{{ url_for('forum_page', page=page_num) }}" class="btn btn-info mb-4">{{ page_num }}</a>
+      {% else %}
+      <a href="{{ url_for('forum_page', page=page_num) }}" class="btn btn-outline-info mb-4">{{ page_num }}</a>
+      {% endif %}
+  {% else %}
+   ...
+  {% endif %}
   {% endfor %}
+</div>
 </div>
 {% endblock %}

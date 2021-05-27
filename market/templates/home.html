@@ -4,16 +4,20 @@
 {% endblock %} 
 
 {% block content %}
-
-<div class="jumbotron text-center">
-  <h1 class="display-4">Welcome!</h1>
-  <p class="lead">On this marketplace you can buy or sell smartphones.</p>
-  <hr class="my-4">
-  <p>Sign up to get 1000$ for <strong>FREE</strong>.</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="{{ url_for('market_page') }}" role="button">Get Started</a>
-  </p>
-  <img src="{{ url_for('static', filename='marketplace.jpg') }}
-  " class="img-thumbnail m-3" alt="Marketplace" width="350px">
+<div class="container">
+  <div class="jumbotron text-center">
+    <h1 class="display-4">Welcome!</h1>
+    <p class="lead">to our online market</p>
+    <hr class="my-4">
+    <p class="m-1">Here you are given 1000$ for <strong>FREE</strong></p>
+    <p class="m-1">So that you can buy smartphones</p>
+    <p>You can also enjoy your time on our forum</p>
+    <!-- <p>Sign up to get 1000$ for <strong>FREE</strong>.</p> -->
+    <p class="lead">
+      <a class="btn btn-primary btn-lg" href="{{ url_for('market_page') }}" role="button">Get Started</a>
+    </p>
+    <img src="{{ url_for('static', filename='marketplace.jpg') }}
+    " class="img-thumbnail m-3" alt="Marketplace" width="350px">
+  </div>
 </div>
 {% endblock %}

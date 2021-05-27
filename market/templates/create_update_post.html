@@ -5,19 +5,19 @@
 
 {% block content %}
 <body>
-  <div class="container text-center w-25">
+  <div class="container text-center w-50">
     <form method="POST" class="form-signin">
       {{ form.hidden_tag() }}
       <h1 class="h3 mb-3 font-weight-normal">
         {{ legend }}
       </h1>
-      <div class="mb-3">
+      <div class="mb-3 mx-5 px-5">
         {{ form.title.label() }}
         {{ form.title(class="form-control", autocomplete="off") }}
       </div>
       <div class="mb-3">
         {{ form.content.label() }}
-        {{ form.content(class="form-control") }}
+        {{ form.content(class="form-control", rows="10") }}
       </div>
       <div class="d-grid gap-2">
         {{ form.submit(class="btn btn-lg btn-primary") }}
