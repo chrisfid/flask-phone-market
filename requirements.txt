@@ -24,6 +24,7 @@ Pillow==8.2.0
 pycodestyle==2.7.0
 pycparser==2.20
 python-dateutil==2.8.1
+python-dotenv==0.17.1
 python-editor==1.0.4
 six==1.16.0
 SQLAlchemy==1.4.7
