@@ -12,8 +12,10 @@
     style="width:64px;height:64px">
     
     <div class="media-body m-2">
-      <b>{{ post.author.username }}</b>
-      <br>
+      <a class="link-info text-decoration-none" href="{{ url_for('user_posts', username=post.author.username) }}">
+        {{ post.author.username }}
+      </a>
+       <br>
       <small>{{ post.time_created.strftime("%Y-%m-%d %H:%M") }}</small>
       {% if current_user == post.author %}
         {% include 'includes/post_modals.html' %}

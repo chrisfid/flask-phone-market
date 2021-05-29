@@ -1,16 +1,19 @@
-from operator import pos
+from operator import methodcaller, pos
 import secrets
 import os
 from PIL import Image
 from flask_login.utils import logout_user
+from flask_wtf import form
 from sqlalchemy.orm.query import Query
 from wtforms import validators
-from market import app
+from market import app, mail
 from flask import render_template, redirect, url_for, flash, request, abort
 from market.models import Item, User, Post
-from market.forms import LoginForm, RegisterForm, PurchaseItemForm, SellItemForm, UpdateAccountForm, PostForm
+from market.forms import (LoginForm, RegisterForm, PurchaseItemForm, SellItemForm,
+                          UpdateAccountForm, PostForm, RequestResetForm, ResetPasswordForm)
 from market import db
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_mail import Message
 
 @app.route('/')
 @app.route('/home')
@@ -129,6 +132,16 @@ def forum_page():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.time_created.desc()).paginate(page=page, per_page=4)
     return render_template('forum.html', posts=posts)
+
+@app.route('/forum/<string:username>')
+@login_required
+def user_posts(username):
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user)\
+        .order_by(Post.time_created.desc())\
+        .paginate(page=page, per_page=4)
+    return render_template('user_posts.html', posts=posts, user=user)
  
 @app.route('/post/<int:post_id>')
 @login_required
@@ -179,3 +192,48 @@ def delete_post(post_id):
     db.session.commit()
     flash(f'Your post has been deleted!', category='success')
     return redirect(url_for('forum_page'))
+
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                  sender='noreply@demo.com',
+                  recipients=[user.email_address])
+    msg.body = f'''To reset your password, visit the following link:
+{url_for('reset_token', token=token, _external=True)}
+If you did not make this request then simply ignore this email and no changes will be made.
+'''
+    mail.send(msg)
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return(url_for('home_page'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email_address=form.email_address.data).first()
+        send_reset_email(user)
+        flash('An email has been sent with instructions to reset your password.', category='info')
+        return redirect(url_for('login_page'))
+    if form.email_address.errors:
+        for err_msg in form.email_address.errors:
+            flash(err_msg, category='danger')
+    return render_template('reset_request.html', form=form)
+    
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return(url_for('home_page'))
+    user = User.verify_reset_token(token)
+    if not user:
+        flash('That is an invalid or expired token', category='warning')
+        return redirect(url_for('reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.password = form.password1.data
+        db.session.commit()
+        flash(f'You password has been updated! You are now able to log in.', category='success')
+        return redirect(url_for('login_page'))
+    if form.errors != {}:
+        flash(f'Passwords do not match.', category='danger')
+    return render_template('reset_token.html', form=form)

@@ -13,20 +13,20 @@ class RegisterForm(FlaskForm):
       raise ValidationError('That username already exists. Please choose a different one')
   
   def validate_email_address(self, email_address_to_check):
-    email_address = User.query.filter_by(email_address=email_address_to_check.data).first()
-    if email_address:
+    user = User.query.filter_by(email_address=email_address_to_check.data).first()
+    if user:
       raise ValidationError('That email address already exists. Please choose a different one')
 
   username = StringField(label='Username:', validators=[Length(min=2, max=30), DataRequired()])
-  email_address = StringField(label='Email Address:', validators=[Email(), DataRequired()])
+  email_address = StringField(label='Email:', validators=[Email(), DataRequired()])
   password1 = PasswordField(label='Password:', validators=[Length(min=6), DataRequired()])
   password2 = PasswordField(label='Confirm Password:', validators=[EqualTo('password1'), DataRequired()])
-  submit = SubmitField(label='Create Account')
+  submit = SubmitField(label='Sign Up')
 
 class LoginForm(FlaskForm):
   username = StringField(label='Username', validators=[DataRequired()])
   password = PasswordField(label='Password', validators=[DataRequired()])
-  submit = SubmitField(label='Sign in')
+  submit = SubmitField(label='Sign In')
 
 class PurchaseItemForm(FlaskForm):
     submit = SubmitField(label='Purchase Item!')
@@ -56,3 +56,17 @@ class PostForm(FlaskForm):
   title = StringField('Title', validators=[DataRequired()])
   content = TextAreaField('Content', validators=[DataRequired()])
   submit = SubmitField('Post')
+
+class RequestResetForm(FlaskForm):
+  email_address = StringField(label='Email Address:', validators=[Email(), DataRequired()])
+  submit = SubmitField('Request Password Reset')
+
+  def validate_email_address(self, email_address_to_check):
+    user = User.query.filter_by(email_address=email_address_to_check.data).first()
+    if user is None:
+      raise ValidationError('There is no account with that email. You must register first.')
+
+class ResetPasswordForm(FlaskForm):
+  password1 = PasswordField(label='Password:', validators=[Length(min=6), DataRequired()])
+  password2 = PasswordField(label='Confirm Password:', validators=[EqualTo('password1'), DataRequired()])
+  submit = SubmitField('Reset Password')

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+Login Page
+{% endblock %}
+
+{% block content %}
+<body>
+  <div class="container text-center w-25">
+    <form method="POST" class="form-signin">
+      {{ form.hidden_tag() }}
+      <br>
+      <h1 class="h3 mb-3 font-weight-normal">
+        Reset Password
+      </h1>
+      {{ form.email_address.label() }}
+      {{ form.email_address(class="form-control", placeholder="Email") }}
+      <br>
+      <div class="d-grid gap-2">
+        {{ form.submit(class="btn btn-lg btn-primary") }}
+      </div>
+    </form>
+  </div>
+</body>
+{% endblock %}

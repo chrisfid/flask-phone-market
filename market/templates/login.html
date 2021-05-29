@@ -10,7 +10,7 @@ Login Page
       {{ form.hidden_tag() }}
       <br>
       <h1 class="h3 mb-3 font-weight-normal">
-        Please Login
+        Please Log In
       </h1>
       {{ form.username.label() }}
       {{ form.username(class="form-control", placeholder="Username") }}
@@ -19,8 +19,11 @@ Login Page
       {{ form.password(class="form-control", placeholder="Password") }}
       <br>
       <div class="checkbox mb-3">
-        <h6>Do not have an account?</h6>
-        <a href="{{ url_for('register_page') }}" class="btn btn-sm btn-secondary">Register</a>
+        <a href="{{ url_for('register_page') }}" class="link-light">Do not have an account?</a>
+      </div>
+      <div class="checkbox mb-3">
+        <h6></h6>
+        <a href="{{ url_for('reset_request') }}" class="link-light">Forgot password?</a>
       </div>
       <div class="d-grid gap-2">
         {{ form.submit(class="btn btn-lg btn-primary") }}
