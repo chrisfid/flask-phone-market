@@ -10,7 +10,7 @@ from flask_mail import Mail
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///market.db'
-app.config['SECRET_KEY'] = 'c1b2ab50c74d1c749c1943f4'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 db = SQLAlchemy(app)
 # Must be render_as_batch while using sqlite
 migrate = Migrate(app, db, render_as_batch=True)  
