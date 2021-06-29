@@ -12,7 +12,7 @@
     style="width:64px;height:64px">
     
     <div class="media-body m-2">
-      <a class="link-info text-decoration-none" href="{{ url_for('user_posts', username=post.author.username) }}">
+      <a class="link-info text-decoration-none" href="{{ url_for('users.user_posts', username=post.author.username) }}">
         {{ post.author.username }}
       </a>
        <br>
@@ -22,7 +22,7 @@
         <button type="button" class="btn btn-danger float-end mx-1" data-bs-toggle="modal" data-bs-target="#Modal-DeletePost">
           Delete
         </button>
-        <a type="button" href="{{ url_for('update_post', post_id=post.id) }}" class="btn btn-primary float-end">Update</a>
+        <a type="button" href="{{ url_for('posts.update_post', post_id=post.id) }}" class="btn btn-primary float-end">Update</a>
       {% endif %}
       <hr class="mt-4">
       <h4 class="mt-0">{{ post.title }}</></h4>

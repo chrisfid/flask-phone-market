@@ -19,11 +19,11 @@ Login Page
       {{ form.password(class="form-control", placeholder="Password") }}
       <br>
       <div class="checkbox mb-3">
-        <a href="{{ url_for('register_page') }}" class="link-light">Do not have an account?</a>
+        <a href="{{ url_for('users.register_page') }}" class="link-light">Do not have an account?</a>
       </div>
       <div class="checkbox mb-3">
         <h6></h6>
-        <a href="{{ url_for('reset_request') }}" class="link-light">Forgot password?</a>
+        <a href="{{ url_for('users.reset_request') }}" class="link-light">Forgot password?</a>
       </div>
       <div class="d-grid gap-2">
         {{ form.submit(class="btn btn-lg btn-primary") }}
