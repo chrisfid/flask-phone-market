@@ -5,6 +5,7 @@ from flask_login import LoginManager, login_manager
 from flask_migrate import Migrate
 from flask_mail import Mail
 from market.config import Config
+import os
 
 
 db = SQLAlchemy()
@@ -19,8 +20,11 @@ mail = Mail()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
+    if os.environ.get('DEBUG') == '1':
+        app.config['SQLALCHEMY_DATABASE_URI'] = Config.DEV_DB
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = Config.PROD_DB
     app.config.from_object(Config)
-
     db.init_app(app)
     migrate.init_app(app)
     bcrypt.init_app(app)
