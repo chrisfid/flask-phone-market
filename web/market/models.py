@@ -20,8 +20,8 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(length=60), nullable=False)
     budget = db.Column(db.Integer(), nullable=False, default=1000)
     # Must be default -> server_default so that you can add a col to an existing db
-    image_file = db.Column(db.Integer(), nullable=False,
-                           server_default='default-profile-pic.jpg')
+    image_file = db.Column(db.String(20), nullable=False,
+                           server_default='default.jpg')
     items = db.relationship('Item', backref='owned_user', lazy=True)
     posts = db.relationship('Post', backref='author', lazy=True)
 

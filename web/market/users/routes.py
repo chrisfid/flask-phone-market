@@ -67,7 +67,7 @@ def account_page():
         current_user.email_address = form.email_address.data
         db.session.commit()
         flash(f'Your account has been updated!', category='success')
-        return redirect(url_for('main.account_page'))
+        return redirect(url_for('users.account_page'))
     if form.picture.errors:
         for err_msg in form.picture.errors:
             flash(err_msg, category='danger')
