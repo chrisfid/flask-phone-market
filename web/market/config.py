@@ -1,10 +1,10 @@
 import os
 
-DEV_DB = 'sqlite:///market.db'
-pg_user = 'admin'
-pg_pass = 'admin'
-pg_db = 'market'
-pg_host = 'db'
+DEV_DB = os.environ.get('DEV_DB')
+pg_user = os.environ.get('PG_USER')
+pg_pass = os.environ.get('PG_PASS')
+pg_db = os.environ.get('PG_DB')
+pg_host = os.environ.get('PG_HOST')
 pg_port = 5432
 PROD_DB = f'postgresql://{pg_user}:{pg_pass}@{pg_host}:{pg_port}/{pg_db}'
 
@@ -14,9 +14,9 @@ class Config:
         SQLALCHEMY_DATABASE_URI = DEV_DB
     else:
         SQLALCHEMY_DATABASE_URI = PROD_DB
-    SECRET_KEY = '812bc484e4d965c184e933e12d79d9f8'
+    SECRET_KEY = os.environ.get('SECRET_KEY')
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = 'marioq1717@gmail.com'
-    MAIL_PASSWORD = 'testowaniee32!'
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')

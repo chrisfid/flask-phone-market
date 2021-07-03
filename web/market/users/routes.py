@@ -100,7 +100,7 @@ def reset_request():
             email_address=form.email_address.data).first()
         send_reset_email(user)
         flash('An email has been sent with instructions to reset your password.', category='info')
-        return redirect(url_for('main.login_page'))
+        return redirect(url_for('users.login_page'))
     if form.email_address.errors:
         for err_msg in form.email_address.errors:
             flash(err_msg, category='danger')
