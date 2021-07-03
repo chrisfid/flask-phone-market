@@ -7,11 +7,11 @@ services:
     ports:
       - 5000:5000
     environment:
-      - DEBUG=1
+      - DEBUG=0
     networks:
       - flask_network
     env_file:
-      - web/market/.env
+      - .env
   proxy:
     build: proxy
     restart: always
@@ -28,9 +28,9 @@ services:
     networks:
       - flask_network
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=market
+      - POSTGRES_USER=os.environ.get('PG_USER')
+      - POSTGRES_PASSWORD=os.environ.get('PG_PASS')
+      - POSTGRES_DB=os.environ.get('PG_DB')
     volumes:
       - postgres_data:/var/lib/postgresql/data
 networks:
