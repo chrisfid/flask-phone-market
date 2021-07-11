@@ -5,7 +5,6 @@ from flask_login import LoginManager, login_manager
 from flask_migrate import Migrate
 from flask_mail import Mail
 from market.config import Config
-import os
 
 
 db = SQLAlchemy()
